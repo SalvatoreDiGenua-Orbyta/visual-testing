@@ -6,15 +6,6 @@ import {
   input,
 } from '@angular/core';
 
-/**
- * Candidate type utility for the public API.
- *
- * Signal inputs expose their accepted write type through Angular's public
- * InputSignalWithTransform<T, TransformT> type.
- *
- * Legacy @Input() properties do not leave a type-level marker on the class
- * property, so TypeScript alone cannot distinguish them from ordinary fields.
- */
 export type InputValue<T> =
   T extends InputSignalWithTransform<infer _Read, infer Write>
     ? Write
@@ -64,8 +55,28 @@ export class LegacyInputsComponent {
   helper(): void {}
 }
 
-export type SignalInputsCandidate =
-  CandidateComponentInputs<SignalInputsComponent>;
+export type SignalInputsCandidate = CandidateComponentInputs<SignalInputsComponent>;
+export type LegacyInputsCandidate = CandidateComponentInputs<LegacyInputsComponent>;
 
-export type LegacyInputsCandidate =
-  CandidateComponentInputs<LegacyInputsComponent>;
+declare const signalInputs: SignalInputsCandidate;
+signalInputs.title = 'custom';
+signalInputs.requiredTitle = 'required';
+signalInputs.transformed = 'true';
+signalInputs.count = 3;
+signalInputs.tags = ['a', 'b'];
+// @ts-expect-error signal input must reject the wrong write type.
+signalInputs.count = '3';
+// @ts-expect-error ordinary fields must not be exposed as inputs.
+signalInputs.ordinaryField = 'wrong';
+
+declare const legacyInputs: LegacyInputsCandidate;
+legacyInputs.title = 'custom';
+legacyInputs.requiredTitle = 'required';
+legacyInputs.count = 3;
+// NOTE: legacy @Input({ transform }) is exposed using its property type.
+// TypeScript cannot recover Angular's transform write type without private ɵ APIs.
+legacyInputs.transformed = false;
+// @ts-expect-error legacy property type still rejects unrelated values.
+legacyInputs.count = '3';
+// @ts-expect-error methods must not be exposed as inputs.
+legacyInputs.helper = () => {};
