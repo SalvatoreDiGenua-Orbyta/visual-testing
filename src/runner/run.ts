@@ -1,5 +1,6 @@
 import type { VisualDefinition } from '../definitions/types.js';
 import { filterDefinitions, type VisualFilter } from './filter.js';
+import { prepareSnapshotUpdate } from '../snapshots/storage.js';
 import { runDefinition, type VisualRunnerOptions } from './visual-runner.js';
 import { aggregateResults, type VisualRunSummary } from './aggregate.js';
 
@@ -11,7 +12,13 @@ export async function runVisuals(
   definitions: readonly VisualDefinition<unknown>[],
   options: RunOptions,
 ): Promise<VisualRunSummary> {
-  const selected = filterDefinitions(definitions, options.filter ?? {});
+  const filter = options.filter ?? {};
+  const selected = filterDefinitions(definitions, filter);
+
+  if (options.update) {
+    await prepareSnapshotUpdate(options.snapshotRoot, definitions, filter);
+  }
+
   const results = [];
 
   for (const definition of selected) {
