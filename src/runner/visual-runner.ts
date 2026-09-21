@@ -20,8 +20,9 @@ export async function runDefinition(definition: VisualDefinition<unknown>, optio
   const results: VisualResult[] = [];
   for (const variant of definition.variants) {
     const identity = { component: definition.component.name || 'anonymous', definition: definition.name, variant: variant.name };
-    const harness = createVisualHarness(options.applicationRef, definition.component, definition.providers ?? []);
+    let harness: ReturnType<typeof createVisualHarness> | undefined;
     try {
+      harness = createVisualHarness(options.applicationRef, definition.component, definition.providers ?? []);
       applyInputs(harness.componentRef, variant.inputs);
       harness.componentRef.changeDetectorRef.detectChanges();
       await waitForAngularStable(options.applicationRef);
@@ -34,7 +35,7 @@ export async function runDefinition(definition: VisualDefinition<unknown>, optio
       const missing = /snapshot.*(does not exist|doesn't exist)|snapshot.*not found/i.test(message);
       results.push({ status: missing ? 'WARNING' : 'VISUAL DIFFERENCE', ...identity, message });
     } finally {
-      harness.destroy();
+      harness?.destroy();
     }
   }
   return results;
