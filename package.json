@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "Visual regression testing for Angular applications powered by Playwright.",
   "type": "module",
+  "main": "./dist/public-api.js",
+  "types": "./dist/public-api.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/public-api.d.ts",
+      "import": "./dist/public-api.js"
+    }
+  },
   "engines": {
     "node": ">=20.19.0"
   },
@@ -10,7 +18,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
-    "typecheck:spike": "tsc -p tsconfig.spike.json --noEmit"
+    "typecheck:spike": "tsc -p tsconfig.spike.json --noEmit",
+    "test:integration": "npm run build && npm --prefix fixtures/angular-app install && playwright test -c playwright.integration.config.ts"
   },
   "dependencies": {
     "@playwright/test": "^1.55.0",
@@ -19,6 +28,10 @@
   "devDependencies": {
     "@angular/core": "^22.1.7",
     "@angular/platform-browser": "^22.1.7",
+    "@angular/compiler": "^22.1.7",
+    "@angular/common": "^22.1.7",
+    "@angular/cli": "^22.1.7",
+    "@angular/build": "^22.1.7",
     "typescript": "^5.9.0",
     "vitest": "^3.2.4",
     "@types/node": "^22.15.0"
