@@ -4,25 +4,51 @@ Angular visual regression testing library powered by Playwright.
 
 ## Status
 
-Early development. The repository is currently establishing the package
-structure and validating the public TypeScript API constraints.
+Early development. The core definition, Angular harness, stabilization,
+snapshot identity, Playwright screenshot adapter, filtering, result statuses,
+and CLI argument parser are implemented on this feature branch.
 
-## Design
+## Public API
 
-The MVP targets:
+The public surface is intentionally small:
 
-- Angular >= 19
-- standalone components
-- Playwright/Chromium for visual comparison
-- component definitions collected from an explicit entrypoint
-- type-safe visual variants derived from the component type
-- a small public API centered on defineVisual() and provideVisualTesting()
+```ts
+import { defineVisual, provideVisualTesting } from 'visual-testing';
 
-## Development
+defineVisual({
+  name: 'states',
+  component: ButtonComponent,
+  variants: [
+    { name: 'default' },
+    { name: 'disabled', inputs: { disabled: true } },
+  ],
+});
 
-The first milestone is the Angular input type spike. It verifies what can be
-derived from public Angular/TypeScript types before the public definition API is
-implemented.
+provideVisualTesting({
+  definitions: './src/visual-testing/index.ts',
+  snapshots: './visual-snapshots',
+});
+```
 
-    npm install
-    npm run typecheck:spike
+Definitions are collected from an explicit entrypoint whose default export is an
+array of definitions. Each definition has one or more independently named
+variants.
+
+## Runtime model
+
+Each variant receives a fresh Angular component instance. Inputs are applied
+with Angular's public `ComponentRef.setInput()` API. The runner waits for
+Angular stability and fonts, targets the component host element, and uses
+Playwright screenshot assertions with Chromium at 1024x800 and animations
+disabled.
+
+## Remaining integration work
+
+The CLI still needs the consumer-application loading contract and the full
+`test`, `update`, and `init` orchestration. That boundary was intentionally
+left separate from the core runtime because it determines how the real
+application injector is loaded without exposing internal harness/runner classes.
+
+The Angular input spike also documents the public-type limitation for legacy
+`@Input()`: TypeScript cannot distinguish an input property from another
+public class property without compiler/private Angular metadata.
