@@ -31,10 +31,9 @@ describe('waitForAngularStable', () => {
 
 describe('waitForFonts', () => {
   it('resolves when the document font set is ready', async () => {
-    const ready = Promise.resolve();
-    Object.defineProperty(document, 'fonts', {
+    Object.defineProperty(globalThis, 'document', {
       configurable: true,
-      value: { ready },
+      value: { fonts: { ready: Promise.resolve() } },
     });
 
     await expect(waitForFonts(100)).resolves.toBeUndefined();
