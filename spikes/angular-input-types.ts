@@ -16,7 +16,7 @@ import {
  * property, so TypeScript alone cannot distinguish them from ordinary fields.
  */
 export type InputValue<T> =
-  T extends InputSignalWithTransform<unknown, infer Write>
+  T extends InputSignalWithTransform<infer _Read, infer Write>
     ? Write
     : T extends InputSignal<infer Read>
       ? Read
