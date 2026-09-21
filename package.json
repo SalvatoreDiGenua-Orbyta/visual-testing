@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "description": "Visual regression testing for Angular applications powered by Playwright.",
   "type": "module",
-  "engines": { "node": ">=20.19.0" },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:spike": "tsc -p tsconfig.spike.json --noEmit"
   },
   "dependencies": {
-    "@angular/core": "^22.1.7",
     "playwright": "^1.55.0"
   },
-  "devDependencies": { "typescript": "^5.9.0" },
-  "peerDependencies": { "@angular/core": ">=19.0.0" }
+  "devDependencies": {
+    "@angular/core": "^22.1.7",
+    "typescript": "^5.9.0"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=19.0.0"
+  }
 }
