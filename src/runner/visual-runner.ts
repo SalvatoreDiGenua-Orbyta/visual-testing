@@ -33,7 +33,7 @@ export async function runDefinition(definition: VisualDefinition<unknown>, optio
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       const missing = /snapshot.*(does not exist|doesn't exist)|snapshot.*not found/i.test(message);
-      results.push({ status: missing ? 'WARNING' : 'VISUAL DIFFERENCE', ...identity, message });
+      results.push({ status: missing ? 'WARNING' : 'ERROR', ...identity, message });
     } finally {
       harness?.destroy();
     }
