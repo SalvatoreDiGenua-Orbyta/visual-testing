@@ -6,6 +6,7 @@ import { waitForAngularStable, waitForFonts } from '../angular/stabilize.js';
 import { applyInputs } from './input-application.js';
 import { snapshotPath } from '../snapshots/path.js';
 import type { VisualScreenshotAdapter } from '../playwright/adapter.js';
+import { MissingSnapshotError, VisualDifferenceError } from '../playwright/adapter.js';
 import type { VisualResult } from './status.js';
 
 export interface VisualRunnerOptions {
@@ -32,8 +33,9 @@ export async function runDefinition(definition: VisualDefinition<unknown>, optio
       results.push({ status: 'PASS', ...identity });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      const missing = /snapshot.*(does not exist|doesn't exist)|snapshot.*not found/i.test(message);
-      results.push({ status: missing ? 'WARNING' : 'ERROR', ...identity, message });
+      const status = error instanceof MissingSnapshotError ? 'WARNING' :
+        error instanceof VisualDifferenceError ? 'VISUAL DIFFERENCE' : 'ERROR';
+      results.push({ status, ...identity, message });
     } finally {
       harness?.destroy();
     }
