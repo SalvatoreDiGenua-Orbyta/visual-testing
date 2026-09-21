@@ -14,11 +14,21 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "outputPath": "dist"
+          },
+          "configurations": {
+            "integration": {
+              "browser": "src/integration-main.ts"
+            }
           }
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {}
+          "options": {},
+          "configurations": {
+            "integration": {
+              "buildTarget": "visual-testing-angular-fixture:build:integration"
+            }
+          }
         }
       }
     }
