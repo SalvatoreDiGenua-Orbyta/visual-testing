@@ -19,12 +19,7 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {},
-          "configurations": {
-            "integration": {
-              "buildTarget": "visual-testing-angular-fixture:build:integration"
-            }
-          }
+          "options": {}
         }
       }
     }
