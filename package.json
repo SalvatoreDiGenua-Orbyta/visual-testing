@@ -28,10 +28,10 @@
     "playwright": "^1.55.0"
   },
   "devDependencies": {
-    "@angular/core": "^22.1.8",
-    "@angular/platform-browser": "^22.1.8",
-    "@angular/compiler": "^22.1.8",
-    "@angular/common": "^22.1.8",
+    "@angular/core": "^22.1.7",
+    "@angular/platform-browser": "^22.1.7",
+    "@angular/compiler": "^22.1.7",
+    "@angular/common": "^22.1.7",
     "@angular/cli": "^22.1.8",
     "@angular/build": "^22.1.8",
     "typescript": "^6.0.3",
