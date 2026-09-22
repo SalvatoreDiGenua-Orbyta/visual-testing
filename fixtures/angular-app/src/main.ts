@@ -9,4 +9,6 @@ import { appConfig } from './app.config';
 })
 class RootComponent {}
 
-bootstrapApplication(RootComponent, appConfig);
+bootstrapApplication(RootComponent, appConfig).then(() => {
+  window.__angularBootstrapCompleted = true;
+});
