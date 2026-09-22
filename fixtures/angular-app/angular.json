@@ -14,7 +14,10 @@
             "browser": "src/main.ts",
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
-            "outputPath": "dist"
+            "outputPath": "dist",
+            "polyfills": [
+              "zone.js"
+            ]
           }
         },
         "serve": {
