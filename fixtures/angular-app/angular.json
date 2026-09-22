@@ -15,12 +15,6 @@
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
             "outputPath": "dist"
-          },
-          "configurations": {
-            "integration": {
-              "browser": "src/integration-main.ts",
-              "tsConfig": "tsconfig.integration.json"
-            }
           }
         },
         "serve": {
