@@ -26,7 +26,7 @@ describe('installBrowserRuntime', () => {
       value: windowMock,
     });
 
-    installBrowserRuntime({} as never);
+    installBrowserRuntime({} as never, { definitions: './src/visual-testing/index.ts', snapshots: './visual-snapshots' });
 
     expect(windowMock.__visualTestingRuntime).toBeDefined();
 
