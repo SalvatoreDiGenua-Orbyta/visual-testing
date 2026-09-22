@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 test('renders a real Angular component through the visual testing runtime', async ({ page }) => {
   const pageErrors: string[] = [];
   const consoleErrors: string[] = [];
+  const unhandledRejections: string[] = [];
 
   page.on('pageerror', (error) => {
     pageErrors.push(error.stack ?? error.message);
@@ -12,8 +13,25 @@ test('renders a real Angular component through the visual testing runtime', asyn
       consoleErrors.push(message.text());
     }
   });
+  page.on('requestfailed', (request) => {
+    const failure = request.failure();
+    if (failure) {
+      consoleErrors.push(`Request failed: ${request.url()} — ${failure.errorText}`);
+    }
+  });
 
   await page.goto('/');
+
+  await page.evaluate(() => {
+    window.addEventListener('unhandledrejection', (event) => {
+      const reason = event.reason;
+      const message = reason instanceof Error ? reason.stack ?? reason.message : String(reason);
+      (window as unknown as { __visualTestingUnhandledRejections?: string[] })
+        .__visualTestingUnhandledRejections ??= [];
+      (window as unknown as { __visualTestingUnhandledRejections: string[] })
+        .__visualTestingUnhandledRejections.push(message);
+    });
+  });
 
   try {
     await page.waitForFunction(
@@ -22,14 +40,24 @@ test('renders a real Angular component through the visual testing runtime', asyn
       { timeout: 10_000 },
     );
   } catch (error) {
+    const browserRejections = await page.evaluate(
+      () =>
+        (window as unknown as { __visualTestingUnhandledRejections?: string[] })
+          .__visualTestingUnhandledRejections ?? [],
+    );
+    unhandledRejections.push(...browserRejections);
+
     throw new Error(
       [
         error instanceof Error ? error.message : String(error),
-        pageErrors.length ? `Page errors:\n${pageErrors.join('\\n')}` : '',
-        consoleErrors.length ? `Console errors:\n${consoleErrors.join('\\n')}` : '',
+        pageErrors.length ? `Page errors:\\n${pageErrors.join('\\n')}` : '',
+        consoleErrors.length ? `Console errors:\\n${consoleErrors.join('\\n')}` : '',
+        unhandledRejections.length
+          ? `Unhandled rejections:\\n${unhandledRejections.join('\\n')}`
+          : '',
       ]
         .filter(Boolean)
-        .join('\n\n'),
+        .join('\\n\\n'),
     );
   }
 
