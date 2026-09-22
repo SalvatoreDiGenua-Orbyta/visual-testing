@@ -7,7 +7,8 @@
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "isolatedModules": true
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
