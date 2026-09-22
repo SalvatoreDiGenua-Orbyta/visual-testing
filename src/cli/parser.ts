@@ -9,6 +9,7 @@ export interface CliOptions {
 export function parseArgs(args: readonly string[]): CliOptions {
   if (!args.length) return { command: 'help' };
   const [command, ...rest] = args;
+  if (!command) return { command: 'help' };
   if (command === '--help' || command === '-h') return { command: 'help' };
   if (command === '--version' || command === '-v') return { command: 'version' };
   if (!['test', 'update', 'init'].includes(command)) throw new Error(`Unknown command "${command}".`);
@@ -16,6 +17,7 @@ export function parseArgs(args: readonly string[]): CliOptions {
   let variant: string | undefined;
   for (let i = 0; i < rest.length; i++) {
     const arg = rest[i];
+    if (arg === undefined) throw new Error('Invalid empty argument.');
     if (arg === '--variant') {
       variant = rest[++i];
       if (!variant) throw new Error('--variant requires a value.');
