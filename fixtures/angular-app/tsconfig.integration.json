@@ -3,5 +3,7 @@
   "compilerOptions": {
     "types": []
   },
-  "files": ["src/integration-main.ts"]
+  "include": [
+    "src/integration-main.ts"
+  ]
 }
