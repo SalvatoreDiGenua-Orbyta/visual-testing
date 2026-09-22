@@ -1,0 +1,7 @@
+node_modules/
+dist/
+coverage/
+visual-snapshots/
+visual-test-results/
+fixtures/angular-app/dist/
+fixtures/angular-app/.angular/

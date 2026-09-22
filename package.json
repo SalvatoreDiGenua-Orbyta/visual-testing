@@ -1,0 +1,48 @@
+{
+  "name": "visual-testing",
+  "version": "0.1.0",
+  "description": "Visual regression testing for Angular applications powered by Playwright.",
+  "type": "module",
+  "main": "./dist/public-api.js",
+  "types": "./dist/public-api.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/public-api.d.ts",
+      "import": "./dist/public-api.js"
+    }
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "typecheck:spike": "tsc -p tsconfig.spike.json --noEmit",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "test:integration": "npm run build && npm --prefix fixtures/angular-app install && playwright test -c playwright.integration.config.ts"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.55.0",
+    "playwright": "^1.55.0"
+  },
+  "devDependencies": {
+    "@angular/core": "^19.2.25",
+    "@angular/platform-browser": "^19.2.25",
+    "@angular/compiler": "^19.2.25",
+    "@angular/common": "^19.2.25",
+    "@angular/cli": "^19.2.27",
+    "@angular/build": "^19.2.27",
+    "typescript": "~5.8.3",
+    "vitest": "^4.1.11",
+    "@types/node": "^22.15.0",
+    "prettier": "3.9.8"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=19.0.0 <20.0.0"
+  },
+  "bin": {
+    "visual-testing": "./dist/cli/index.js"
+  }
+}
