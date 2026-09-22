@@ -1,9 +1,37 @@
 import { expect, test } from '@playwright/test';
 
 test('renders a real Angular component through the visual testing runtime', async ({ page }) => {
+  const pageErrors: string[] = [];
+  const consoleErrors: string[] = [];
+
+  page.on('pageerror', (error) => {
+    pageErrors.push(error.stack ?? error.message);
+  });
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      consoleErrors.push(message.text());
+    }
+  });
+
   await page.goto('/');
 
-  await page.waitForFunction(() => Boolean((window as unknown as { __visualTestingRuntime?: unknown }).__visualTestingRuntime));
+  try {
+    await page.waitForFunction(
+      () => Boolean((window as unknown as { __visualTestingRuntime?: unknown }).__visualTestingRuntime),
+      undefined,
+      { timeout: 10_000 },
+    );
+  } catch (error) {
+    throw new Error(
+      [
+        error instanceof Error ? error.message : String(error),
+        pageErrors.length ? `Page errors:\n${pageErrors.join('\\n')}` : '',
+        consoleErrors.length ? `Console errors:\n${consoleErrors.join('\\n')}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n\n'),
+    );
+  }
 
   await page.evaluate(async () => {
     const runtime = (window as unknown as {
