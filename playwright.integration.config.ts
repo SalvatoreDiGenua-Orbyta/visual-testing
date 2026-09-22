@@ -9,7 +9,7 @@ export default defineConfig({
     viewport: { width: 1024, height: 800 },
   },
   webServer: {
-    command: 'npm start -- --port 4300 --configuration integration',
+    command: 'npm start -- --port 4300',
     cwd: 'fixtures/angular-app',
     url: 'http://127.0.0.1:4300',
     reuseExistingServer: true,
