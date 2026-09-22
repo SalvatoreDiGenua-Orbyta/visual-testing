@@ -1,3 +1,3 @@
-import button from './button.visual.js';
+import button from './button.visual';
 
 export default [button];
