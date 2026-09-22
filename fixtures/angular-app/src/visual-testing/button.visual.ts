@@ -1,5 +1,5 @@
 import { defineVisual } from 'visual-testing';
-import { FixtureButtonComponent } from '../app.component.js';
+import { FixtureButtonComponent } from '../app.component';
 
 export default defineVisual({
   name: 'states',
