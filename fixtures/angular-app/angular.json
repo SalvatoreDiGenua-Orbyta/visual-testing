@@ -18,7 +18,8 @@
           },
           "configurations": {
             "integration": {
-              "browser": "src/integration-main.ts"
+              "browser": "src/integration-main.ts",
+              "tsConfig": "tsconfig.integration.json"
             }
           }
         },
