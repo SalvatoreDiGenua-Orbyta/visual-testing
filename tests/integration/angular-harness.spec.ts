@@ -20,9 +20,7 @@ test('renders a real Angular component through the visual testing runtime', asyn
     }
   });
 
-  await page.goto('/');
-
-  await page.evaluate(() => {
+  await page.addInitScript(() => {
     window.addEventListener('unhandledrejection', (event) => {
       const reason = event.reason;
       const message = reason instanceof Error ? reason.stack ?? reason.message : String(reason);
@@ -32,6 +30,8 @@ test('renders a real Angular component through the visual testing runtime', asyn
         .__visualTestingUnhandledRejections.push(message);
     });
   });
+
+  await page.goto('/');
 
   try {
     await page.waitForFunction(
