@@ -89,7 +89,7 @@ function createSpec(options: PlaywrightRunnerOptions, resultPath: string): strin
     "test('visual testing', async ({ page }) => {",
     "  await page.goto('/');",
     '  await page.waitForFunction(() => Boolean(window.__visualTestingRuntime));',
-    '  const runtime = window.__visualTestingRuntime;',
+    '  const runtime = (window as unknown as { __visualTestingRuntime: { loadDefinitions(url: string): Promise<number>; listDefinitions(): Array<{ component: string; name: string; variants: string[] }>; runVariant(definition: string, variant: string): Promise<string>; destroyVariant(): void } }).__visualTestingRuntime;',
     '  await runtime.loadDefinitions(definitionsUrl);',
     '  const definitions = runtime.listDefinitions();',
     '  for (const definition of definitions) {',
