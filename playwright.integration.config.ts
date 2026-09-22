@@ -9,9 +9,9 @@ export default defineConfig({
     viewport: { width: 1024, height: 800 },
   },
   webServer: {
-    command: 'npm start -- --port 4300',
+    command: 'npx ng serve --host 127.0.0.1 --port 4300 --no-hmr --prebundle=false',
     cwd: 'fixtures/angular-app',
-    url: 'http://127.0.0.1:4300',
+    url: 'http://127.0.0.1:4300/',
     reuseExistingServer: true,
     timeout: 120_000,
   },
