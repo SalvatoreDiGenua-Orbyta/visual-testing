@@ -1,9 +1,9 @@
 import {
+  ApplicationRef,
   InjectionToken,
   inject,
   makeEnvironmentProviders,
   provideEnvironmentInitializer,
-  type ApplicationRef,
   type EnvironmentProviders,
   type Provider,
 } from '@angular/core';
