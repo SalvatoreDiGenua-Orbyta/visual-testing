@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": []
   },
-  "files": ["src/main.ts"]
+  "files": ["src/main.ts", "src/integration-main.ts"]
 }
