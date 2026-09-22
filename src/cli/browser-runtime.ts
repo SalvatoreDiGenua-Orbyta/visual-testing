@@ -6,6 +6,7 @@ import { applyInputs } from '../runner/input-application.js';
 
 interface BrowserVisualRuntime {
   readonly applicationRef: ApplicationRef;
+  readonly config: { readonly definitions: string; readonly snapshots: string };
   readonly definitions?: readonly VisualDefinition<unknown>[];
   readonly active?: {
     readonly id: string;
@@ -20,6 +21,7 @@ const RUNTIME_KEY = '__visualTestingRuntime';
 
 export function installBrowserRuntime(
   applicationRef: ApplicationRef,
+  config: { readonly definitions: string; readonly snapshots: string },
 ): void {
   if (typeof window === 'undefined') return;
 
@@ -28,6 +30,7 @@ export function installBrowserRuntime(
 
   const runtime: BrowserVisualRuntime = {
     applicationRef,
+    config,
 
     async loadDefinitions(moduleUrl) {
       const module = (await import(/* @vite-ignore */ moduleUrl)) as {
