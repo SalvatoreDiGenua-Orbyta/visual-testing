@@ -13,6 +13,7 @@ interface BrowserVisualRuntime {
     readonly harness: ReturnType<typeof createVisualHarness>;
   };
   loadDefinitions(moduleUrl: string): Promise<number>;
+  listDefinitions(): readonly { component: string; name: string; variants: readonly string[] }[];
   runVariant(definitionName: string, variantName: string): Promise<string>;
   destroyVariant(): void;
 }
@@ -43,6 +44,15 @@ export function installBrowserRuntime(
 
       definitions = module.default;
       return definitions.length;
+    },
+
+    listDefinitions() {
+      if (!definitions) throw new Error('Visual definitions have not been loaded.');
+      return definitions.map((definition) => ({
+        component: definition.component.name || 'anonymous',
+        name: definition.name,
+        variants: definition.variants.map((variant) => variant.name),
+      }));
     },
 
     async runVariant(definitionName, variantName) {
