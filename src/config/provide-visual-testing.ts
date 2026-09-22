@@ -29,7 +29,7 @@ export function provideVisualTesting(config: VisualTestingConfig): EnvironmentPr
       useValue: Object.freeze({ ...config }),
     } satisfies Provider,
     provideEnvironmentInitializer(() => {
-      installBrowserRuntime(inject(ApplicationRef));
+      installBrowserRuntime(inject(ApplicationRef), config);
     }),
   ]);
 }
