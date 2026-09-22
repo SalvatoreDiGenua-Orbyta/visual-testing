@@ -1,5 +1,4 @@
 import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
 import { join, relative, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import type { VisualFilter } from '../runner/filter.js';
@@ -17,7 +16,7 @@ export interface PlaywrightRunnerOptions {
 }
 
 export async function runPlaywrightVisuals(options: PlaywrightRunnerOptions): Promise<VisualRunSummary> {
-  const tempRoot = await mkdtemp(join(tmpdir(), 'visual-testing-'));
+  const tempRoot = await mkdtemp(join(options.workspace.workspaceRoot, '.visual-testing-'));
   const configPath = join(tempRoot, 'playwright.config.ts');
   const specPath = join(tempRoot, 'visual-testing.spec.ts');
   const resultPath = join(tempRoot, 'results.json');
