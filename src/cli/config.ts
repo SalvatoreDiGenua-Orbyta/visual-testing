@@ -15,8 +15,11 @@ export async function resolveVisualCliConfig(projectRoot: string): Promise<Visua
     const match = /provideVisualTesting\s*\(\s*\{([\s\S]*?)\}\s*\)/m.exec(source);
     if (!match) continue;
 
-    const definitions = readStringProperty(match[1], 'definitions');
-    const snapshots = readStringProperty(match[1], 'snapshots');
+    const configBlock = match[1];
+    if (configBlock === undefined) continue;
+
+    const definitions = readStringProperty(configBlock, 'definitions');
+    const snapshots = readStringProperty(configBlock, 'snapshots');
     if (definitions && snapshots) {
       return { definitions, snapshots };
     }
