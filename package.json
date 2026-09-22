@@ -19,6 +19,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "typecheck:spike": "tsc -p tsconfig.spike.json --noEmit",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "test:integration": "npm run build && npm --prefix fixtures/angular-app install && playwright test -c playwright.integration.config.ts"
   },
   "dependencies": {
@@ -34,7 +36,8 @@
     "@angular/build": "^22.1.7",
     "typescript": "^5.9.0",
     "vitest": "^3.2.4",
-    "@types/node": "^22.15.0"
+    "@types/node": "^22.15.0",
+    "prettier": "3.9.8"
   },
   "peerDependencies": {
     "@angular/core": ">=19.0.0"
