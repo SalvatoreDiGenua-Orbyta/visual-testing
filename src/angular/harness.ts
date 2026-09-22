@@ -1,6 +1,17 @@
-import { ApplicationRef, ComponentRef, createComponent, createEnvironmentInjector, EnvironmentInjector, Type } from '@angular/core';
+import {
+  ApplicationRef,
+  ComponentRef,
+  createComponent,
+  createEnvironmentInjector,
+  EnvironmentInjector,
+  Type,
+} from '@angular/core';
 
-export interface VisualHarness { readonly host: HTMLElement; readonly componentRef: ComponentRef<unknown>; destroy(): void; }
+export interface VisualHarness {
+  readonly host: HTMLElement;
+  readonly componentRef: ComponentRef<unknown>;
+  destroy(): void;
+}
 
 export function createVisualHarness<T>(
   applicationRef: ApplicationRef,
@@ -11,7 +22,7 @@ export function createVisualHarness<T>(
   host.dataset.visualTesting = 'true';
   document.body.appendChild(host);
   const injector: EnvironmentInjector = providers.length
-    ? createEnvironmentInjector(providers, applicationRef.injector)
+    ? createEnvironmentInjector([...providers], applicationRef.injector)
     : applicationRef.injector;
   const componentRef = createComponent(component, { environmentInjector: injector, hostElement: host });
   applicationRef.attachView(componentRef.hostView);
