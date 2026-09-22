@@ -19,7 +19,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {}
+          "options": {
+            "buildTarget": "visual-testing-angular-fixture:build"
+          }
         }
       }
     }
