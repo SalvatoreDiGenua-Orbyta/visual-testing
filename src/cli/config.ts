@@ -1,5 +1,5 @@
 import { readFile, readdir } from 'node:fs/promises';
-import { extname, join, resolve } from 'node:path';
+import { extname, resolve } from 'node:path';
 
 export interface VisualCliConfig {
   readonly definitions: string;
@@ -29,7 +29,7 @@ export async function resolveVisualCliConfig(projectRoot: string): Promise<Visua
 
 function readStringProperty(source: string, name: string): string | undefined {
   const match = new RegExp(
-    String.raw`\\b${name}\\s*:\\s*(['"])(.*?)\\1`,
+    String.raw`\b${name}\s*:\s*(['"])(.*?)\1`,
   ).exec(source);
   return match?.[2];
 }
