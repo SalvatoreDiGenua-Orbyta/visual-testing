@@ -35,7 +35,11 @@ test('renders a real Angular component through the visual testing runtime', asyn
 
   try {
     await page.waitForFunction(
-      () => Boolean((window as unknown as { __visualTestingRuntime?: unknown }).__visualTestingRuntime),
+      () =>
+        Boolean(
+          (window as unknown as { __angularBootstrapCompleted?: boolean })
+            .__angularBootstrapCompleted,
+        ),
       undefined,
       { timeout: 10_000 },
     );
@@ -50,16 +54,23 @@ test('renders a real Angular component through the visual testing runtime', asyn
     throw new Error(
       [
         error instanceof Error ? error.message : String(error),
-        pageErrors.length ? `Page errors:\\n${pageErrors.join('\\n')}` : '',
-        consoleErrors.length ? `Console errors:\\n${consoleErrors.join('\\n')}` : '',
+        pageErrors.length ? `Page errors:\n${pageErrors.join('\n')}` : '',
+        consoleErrors.length ? `Console errors:\n${consoleErrors.join('\n')}` : '',
         unhandledRejections.length
-          ? `Unhandled rejections:\\n${unhandledRejections.join('\\n')}`
-          : '',
-      ]
-        .filter(Boolean)
-        .join('\\n\\n'),
+          ? `Unhandled rejections:\n${unhandledRejections.join('\n')}` : '',
+      ].filter(Boolean).join('\n\n'),
     );
   }
+
+  await page.waitForFunction(
+    () =>
+      Boolean(
+        (window as unknown as { __visualTestingRuntime?: unknown })
+          .__visualTestingRuntime,
+      ),
+    undefined,
+    { timeout: 10_000 },
+  );
 
   await page.evaluate(async () => {
     const runtime = (window as unknown as {
