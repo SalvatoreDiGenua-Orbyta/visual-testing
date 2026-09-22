@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app.config.js';
+import { appConfig } from './app.config';
 
 @Component({
   selector: 'vt-root',
