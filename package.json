@@ -41,5 +41,8 @@
   },
   "peerDependencies": {
     "@angular/core": ">=19.0.0 <20.0.0"
+  },
+  "bin": {
+    "visual-testing": "./dist/cli/index.js"
   }
 }
